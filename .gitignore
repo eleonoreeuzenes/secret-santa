@@ -2,3 +2,6 @@
 
 # Ignore the database folder
 database/*
+
+# Environment variables
+.env
