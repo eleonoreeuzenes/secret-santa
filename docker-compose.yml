@@ -7,18 +7,25 @@ services:
       - "./server:/var/www"  
     ports:
       - "8081:3000"
-    links:
-      - db
-    environment:
-      - URL_MONGO=mongodb://api:docker1234@mongo
+    env_file:
+      - .env
     command: sh -c "cd /var/www && npm install && npm start"
+    networks:
+      - backend
+    depends_on:
+      - mongodb
 
-  db:
+  mongodb:
     image: mongo:4.0
     volumes:
       - "./database/data:/data/db"
     ports: 
       - "27017:27017"
-    environment: 
-      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_PASSWORD}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    env_file:
+      - .env
+    networks:
+      - backend
+  
+networks:
+  backend:
+    driver: bridge
