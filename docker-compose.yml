@@ -6,7 +6,7 @@ services:
     volumes:
       - "./server:/var/www"  
     ports:
-      - "8081:3000"
+      - "3000:3000"
     env_file:
       - .env
     command: sh -c "cd /var/www && npm install && npm start"
