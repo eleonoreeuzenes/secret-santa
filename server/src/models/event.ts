@@ -1,16 +1,26 @@
-
-import { Schema, model } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 import { EventInterface } from "../types/event.interface";
 
-const eventSchema = new Schema<EventInterface>({
+const eventSchema = new Schema<EventInterface & Document>({
   organizer: { type: String, required: true },
   event_name: { type: String, required: true },
   event_date: { type: Date, required: true },
-  event_location: { type: String},
+  event_location: { type: String },
   budget: { type: Number, required: true },
-  participants: { type: [String], required: true }
+  participants: {
+    type: [
+      {
+        type: String,
+        required: true
+      }
+    ],
+    validate: {
+      validator: function(participants: string[]) {
+        return participants.length >= 3;
+      },
+      message: 'There must be at least 3 participants'
+    }
+  }
 });
 
-const EventModel = model<EventInterface>("Event", eventSchema);
-
-export default EventModel;
+export default model<EventInterface>("Event", eventSchema);
