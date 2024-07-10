@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import * as eventController from './controllers/eventController';
+import * as assignmentController from './controllers/assignmentController';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -26,6 +27,14 @@ app.get('/api/events', eventController.getEvents);
 app.get('/api/events/:eventId', eventController.getEventById);
 app.put('/api/events/:eventId', eventController.updateEvent);
 app.delete('/api/events/:eventId', eventController.deleteEvent);
+
+// Assignment routes
+app.post('/api/assignments', assignmentController.createAssignment);
+app.get('/api/assignments', assignmentController.getAssignments);
+app.get('/api/assignments/event/:eventId', assignmentController.getAssignmentsByEventId);
+app.put('/api/assignments/:assignmentId', assignmentController.updateAssignment);
+app.delete('/api/assignments/:assignmentId', assignmentController.deleteAssignment);
+
 
 // Ensure URL_MONGO is defined
 const dbUrl = process.env.URL_MONGO;

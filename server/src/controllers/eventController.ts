@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import EventModel from '../models/event'
-
+import AssignmentModel from '../models/assignment';
 
 /**
  * Retrieves all events from the database and sends them in the response.
@@ -70,6 +70,19 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
         participants: req.body.participants
       });
       const savedEvent = await newEvent.save();
+
+      const participants = req.body.participants;
+      const secretSantaPairs = generateSecretSanta(participants);
+  
+      const assignments = secretSantaPairs.map(pair => ({
+        event: savedEvent._id,
+        giver: pair.giver,
+        receiver: pair.receiver
+      }));
+  
+      await AssignmentModel.insertMany(assignments);
+  
+      
       res.send(savedEvent);
   } catch (err: any) {
     next(err);
@@ -123,3 +136,46 @@ export const deleteEvent = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
+
+function generateSecretSanta(participants: string[]): { giver: string, receiver: string }[] {
+  if (participants.length < 2) {
+    throw new Error("Il doit y avoir au moins deux participants");
+  }
+
+  let givers = [...participants];
+  let receivers = [...participants];
+
+  function shuffle(array: string[]): string[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function validPairing(givers: string[], receivers: string[]): boolean {
+    for (let i = 0; i < givers.length; i++) {
+      if (givers[i] === receivers[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  let attempts = 0;
+  do {
+    receivers = shuffle(receivers);
+    attempts++;
+  } while (!validPairing(givers, receivers) && attempts < 1000);
+
+  if (attempts === 1000) {
+    throw new Error("Impossible de trouver une répartition valide après 1000 tentatives");
+  }
+
+  let secretSantaPairs = [];
+  for (let i = 0; i < givers.length; i++) {
+    secretSantaPairs.push({ giver: givers[i], receiver: receivers[i] });
+  }
+
+  return secretSantaPairs;
+}
