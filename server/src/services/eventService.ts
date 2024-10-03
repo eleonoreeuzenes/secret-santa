@@ -49,8 +49,8 @@ export const deleteEvent = async (eventId: string) => {
 };
 
 const generateSecretSanta = (participants: string[]): SecretSantaPair[] => {
-    if (participants.length < 2) {
-        throw new Error("Il doit y avoir au moins deux participants");
+    if (participants.length < 3) {
+        throw new Error("Il doit y avoir au moins trois participants");
     }
 
     let givers = [...participants];
