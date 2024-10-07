@@ -39,6 +39,34 @@ export const createEvent = async (eventData: any) => {
     return savedEvent;
 };
 
+const generateSecretSanta = (participants: string[]): SecretSantaPair[] => {
+    if (participants.length < 3) {
+        throw new Error("Il est nécessaire d'avoir au moins trois participants.");
+    }
+
+    const givers = [...participants];
+    let secretSantaPairs: SecretSantaPair[];
+
+    do {
+        const receivers = shuffleReceivers([...participants]);
+        secretSantaPairs = givers.map((giver, index) => ({
+            giver,
+            receiver: receivers[index]
+        }));
+    } while (secretSantaPairs.some(pair => pair.giver === pair.receiver));
+
+    return secretSantaPairs;
+};
+
+const shuffleReceivers = (array: string[]): string[] => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+    return array;
+};
+
+
 export const updateEvent = async (eventId: string, eventData: any) => {
     return await EventModel.findByIdAndUpdate(eventId, eventData, { new: true, runValidators: true });
 };
@@ -48,45 +76,4 @@ export const deleteEvent = async (eventId: string) => {
     return { message: 'Event deleted successfully' };
 };
 
-const generateSecretSanta = (participants: string[]): SecretSantaPair[] => {
-    if (participants.length < 3) {
-        throw new Error("Il doit y avoir au moins trois participants");
-    }
 
-    let givers = [...participants];
-    let receivers = [...participants];
-
-    function shuffle(array: string[]): string[] {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    function validPairing(givers: string[], receivers: string[]): boolean {
-        for (let i = 0; i < givers.length; i++) {
-            if (givers[i] === receivers[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    let attempts = 0;
-    do {
-        receivers = shuffle(receivers);
-        attempts++;
-    } while (!validPairing(givers, receivers) && attempts < 1000);
-
-    if (attempts === 1000) {
-        throw new Error("Impossible de trouver une répartition valide après 1000 tentatives");
-    }
-
-    let secretSantaPairs = [];
-    for (let i = 0; i < givers.length; i++) {
-        secretSantaPairs.push({ giver: givers[i], receiver: receivers[i] });
-    }
-
-    return secretSantaPairs;
-};
