@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@layer base {
+  h1 {
+    @apply text-indigo-600 xl:text-4xl text-3xl font-bold mb-2; /* Your h1 styles */
+  }
+  p {
+    @apply text-slate-800 text-base; /* Your p styles */
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
