@@ -43,6 +43,71 @@
 
   <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
 
+  <h2 class="text-xl font-bold text-slate-800 mb-4">Entrez les détails de l'évènement :</h2>
+  <fieldset formGroupName="infos">
+    <div class="control">
+      <label for="organiser">Organisateur</label>
+      <input
+        id="organiser"
+        type="text"
+        name="organiser"
+        placeholder="Entrez votre nom ou celui de l'entité"
+        formControlName="organiser"
+        class="border border-slate-300 p-2 mt-2 mb-4 rounded w-full"
+      />
+    </div>
+    <div class="control">
+      <label for="eventName">Nom de l'évènement</label>
+      <input
+        id="eventName"
+        type="text"
+        name="eventName"
+        placeholder="Entrez vle nom de l'évènement"
+        formControlName="eventName"
+        class="border border-slate-300 p-2 mt-2 mb-4 rounded w-full"
+      />
+    </div>
+    <div class="control">
+      <label for="eventDate">Date</label>
+      <input
+        id="eventDate"
+        type="text"
+        name="eventDate"
+        placeholder="Entrez la date de l'évènement"
+        formControlName="eventDate"
+        class="border border-slate-300 p-2 mt-2 mb-4 rounded w-full"
+      />
+    </div>
+    <div class="control">
+      <label for="eventLocation">Lieu</label>
+      <input
+        id="eventLocation"
+        type="text"
+        name="eventLocation"
+        placeholder="Entrez le lieu de l'évènement"
+        formControlName="eventLocation"
+        class="border border-slate-300 p-2 mt-2 mb-4 rounded w-full"
+      />
+    </div>
+    </fieldset>
+    <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
+
+    <h2 class="text-xl font-bold text-slate-800 mb-4">Sélectionnez le budget pour un cadeau :</h2>
+    <div class="grid grid-cols-3 gap-4 mb-4">
+      <button
+        *ngFor="let option of budgetOptions"
+        [ngClass]="{
+          'bg-indigo-600 font-bold text-white': form.get('budget')?.value === option.value,
+          'bg-gray-200 text-gray-800': form.get('budget')?.value !== option.value
+        }"
+        (click)="selectBudget(option.value)"
+        class="px-4 py-3 rounded focus:outline-none transition-colors duration-200"
+      >
+        {{ option.label }}
+      </button>
+    </div>
+    <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
+
   <p class="form-actions">
     <button type="submit" class="px-4 py-2 rounded text-white w-full bg-green-600">Submit</button>
   </p>
