@@ -1,46 +1,19 @@
 <div class=" mt-16  w-full max-w-lg mx-auto">
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <h2 class="text-xl font-bold text-slate-800 mb-4">Entrez le nom des participants (3 minimum) :</h2>
-  <fieldset formGroupName="particpants">
-  <div class="control">
-    <input
-      id="participantOne"
-      type="text"
-      name="participantOne"
-      placeholder="Participant 1"
-      formControlName="participantOne"
-      class="border border-slate-300 p-2 mb-2 rounded w-full"
-    />
-  </div>
-  <div class="control">
-    <input
-      id="participantTwo"
-      type="text"
-      name="participantTwo"
-      placeholder="Participant 2"
-      formControlName="participantTwo"
-      class="border border-slate-300 p-2 mb-2 rounded w-full"
-    />
-  </div>
-  <div class="control">
-    <input
-      id="participantThree"
-      type="text"
-      name="participantThree"
-      placeholder="Participant 3"
-      formControlName="participantThree"
-      class="border border-slate-300 p-2 mb-2 rounded w-full"
-    />
-  </div>
-    <!-- Button to Add More Participants -->
-    <button
-      type="button"
-      class="border border-slate-300 text-indigo-600 px-4 py-2 rounded mb-4 w-full"
-    >
-      + Ajouter un participant
-    </button>
-  </fieldset>
 
+  <div formArrayName="participants">
+    <div *ngFor="let participant of participants.controls; let i = index">
+      <input
+        [formControlName]="i" id="participant{{ i }}"
+        [placeholder]="'Participant ' + (i + 1)"
+        class="border border-slate-300 p-2 mb-2 rounded w-full"/>
+      <div *ngIf="participant.invalid && (participant.dirty || participant.touched)">
+        <small *ngIf="participant.errors?.['required']" class="rounded text-red-800 bg-red-200 p-2">Minimun 3 participants sont requis.</small>
+      </div>
+    </div>
+  </div>
+  <button type="button" (click)="addParticipant()" class="border border-slate-300 text-indigo-600 px-4 py-2 rounded mb-4 w-full">+ Ajouter un participant</button>
   <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
 
   <h2 class="text-xl font-bold text-slate-800 mb-4">Entrez les détails de l'évènement :</h2>
@@ -106,6 +79,7 @@
         {{ option.label }}
       </button>
     </div>
+    
     <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
 
   <p class="form-actions">

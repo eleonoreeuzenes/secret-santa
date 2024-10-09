@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,17 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class MultiStepFormComponent {
   form = new FormGroup({
-    particpants: new FormGroup({
-      participantOne: new FormControl('', {
-        validators: [Validators.required],
-      }),
-      participantTwo: new FormControl('', {
-        validators: [Validators.required],
-      }),
-      participantThree: new FormControl('', {
-        validators: [Validators.required],
-      }),
-    }),
+    participants: new FormArray([
+      new FormControl('', Validators.required),
+      new FormControl('', Validators.required),
+      new FormControl('', Validators.required),
+    ]),
     infos: new FormGroup({
       organiser: new FormControl('', {
         validators: [Validators.required],
@@ -39,6 +33,14 @@ export class MultiStepFormComponent {
     budget: new FormControl<'5' | '10' | '15' | '20' | '50' | 'custom'>('5', { validators: [Validators.required] }),
   });
 
+  get participants() {
+    return this.form.get('participants') as FormArray;
+  }
+
+  addParticipant() {
+    this.participants.push(new FormControl('', Validators.required));
+  }
+
   budgetOptions: Array<{ label: string; value: '5' | '10' | '15' | '20' | '50' | 'custom' }> = [
     { label: '5', value: '5' },
     { label: '10', value: '10' },
@@ -53,7 +55,11 @@ export class MultiStepFormComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
+    if (this.form.valid) { // Check if the form is valid before logging
+      console.log(this.form.value);
+    } else {
+      console.log('Form is invalid');
+    }
   }
 
 }
