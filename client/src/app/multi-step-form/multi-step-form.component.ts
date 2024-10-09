@@ -30,7 +30,7 @@ export class MultiStepFormComponent {
         validators: [Validators.required],
       }),
     }),
-    budget: new FormControl<'5' | '10' | '15' | '20' | '50' | 'custom'>('5', { validators: [Validators.required] }),
+    budget: new FormControl<number | string>(5, { validators: [Validators.required] }),
   });
 
   get participants() {
@@ -41,21 +41,34 @@ export class MultiStepFormComponent {
     this.participants.push(new FormControl('', Validators.required));
   }
 
-  budgetOptions: Array<{ label: string; value: '5' | '10' | '15' | '20' | '50' | 'custom' }> = [
-    { label: '5', value: '5' },
-    { label: '10', value: '10' },
-    { label: '15', value: '15' },
-    { label: '20', value: '20' },
-    { label: '50', value: '50' },
+  budgetOptions: Array<{ label: string; value: number | string }> = [
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '20', value: 20 },
+    { label: '50', value: 50 },
     { label: 'Autre', value: 'custom' },
   ];
 
-  selectBudget(value: '5' | '10' | '15' | '20' | '50' | 'custom') {
+  customBudgetValue: number | null = null;
+
+  selectBudget(value: any) {
+    this.customBudgetValue = null;
     this.form.get('budget')?.setValue(value);
   }
 
+  onCustomBudgetInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.customBudgetValue = Number(input.value);
+    this.form.get('budget')?.setValue(this.customBudgetValue);
+  }
+
+  isCustomBudgetSelectedOrEntered(): boolean {
+    return this.form.get('budget')?.value === 'custom' || this.customBudgetValue !== null;
+  }
+
   onSubmit() {
-    if (this.form.valid) { // Check if the form is valid before logging
+    if (this.form.valid) { 
       console.log(this.form.value);
     } else {
       console.log('Form is invalid');

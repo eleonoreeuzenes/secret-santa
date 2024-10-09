@@ -70,8 +70,8 @@
       <button
         *ngFor="let option of budgetOptions"
         [ngClass]="{
-          'bg-indigo-600 font-bold text-white': form.get('budget')?.value === option.value,
-          'bg-gray-200 text-gray-800': form.get('budget')?.value !== option.value
+          'bg-indigo-600 font-bold text-white': (form.get('budget')?.value === option.value) || (option.value === 'custom' && customBudgetValue !== null),
+          'bg-gray-200 text-gray-800': form.get('budget')?.value !== option.value && !(option.value === 'custom' && customBudgetValue !== null)
         }"
         (click)="selectBudget(option.value)"
         class="px-4 py-3 rounded focus:outline-none transition-colors duration-200"
@@ -79,7 +79,17 @@
         {{ option.label }}
       </button>
     </div>
-    
+
+    <div *ngIf="isCustomBudgetSelectedOrEntered()">
+      <input
+        id="customBudget"
+        type="number"
+        (input)="onCustomBudgetInput($event)"
+        placeholder="Entrez un montant"
+        class="border border-slate-300 p-2 mb-2 rounded w-full"
+      />
+    </div>
+
     <button type="submit" class="px-4 py-2 rounded text-white mb-4 w-full bg-indigo-600">Continuer</button>
 
   <p class="form-actions">
