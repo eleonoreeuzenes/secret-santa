@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,10 +16,11 @@ export class MultiStepFormComponent {
 
   form = new FormGroup({
     participants: new FormArray([
-      new FormControl('', Validators.required),
-      new FormControl('', Validators.required),
-      new FormControl('', Validators.required),
-    ]),
+      new FormControl('', {validators : [Validators.required]}),
+      new FormControl('', {validators : [Validators.required]}),
+      new FormControl('', {validators : [Validators.required]}),
+    ],
+  ),
     infos: new FormGroup({
       organiser: new FormControl('', {
         validators: [Validators.required],
@@ -41,9 +42,15 @@ export class MultiStepFormComponent {
     return this.form.get('participants') as FormArray;
   }
 
+  get validParticipants() {
+    const participantNames = this.participants.controls.map(control => control.value);
+    return participantNames.filter(name => name.trim() !== '').length >= 3;
+  }
+  
   addParticipant() {
     this.participants.push(new FormControl('', Validators.required));
   }
+
 
   budgetOptions: Array<{ label: string; value: number | string }> = [
     { label: '5', value: 5 },
@@ -71,15 +78,20 @@ export class MultiStepFormComponent {
     return this.form.get('budget')?.value === 'custom' || this.customBudgetValue !== null;
   }
 
+  isContinuerClicked: boolean = false;
 
   nextStep() {
-    if (this.currentStep === 1 && this.participants.length >= 3) {
+    this.isContinuerClicked = true;
+    if (this.currentStep === 1 && this.validParticipants) {
+      this.isContinuerClicked = false;
       this.currentStep++;
       this.updateProgress();
     } else if (this.currentStep === 2 && this.form.get('infos')?.valid) {
+      this.isContinuerClicked = false;
       this.currentStep++;
       this.updateProgress();
     } else if (this.currentStep === 3 && this.form.get('budget')?.valid) {
+      this.isContinuerClicked = false;
       this.currentStep++;
       this.updateProgress();
     }
