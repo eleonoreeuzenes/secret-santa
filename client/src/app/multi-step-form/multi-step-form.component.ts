@@ -10,6 +10,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './multi-step-form.component.css'
 })
 export class MultiStepFormComponent {
+
+  currentStep = 1;
+  progress = 25;
+
   form = new FormGroup({
     participants: new FormArray([
       new FormControl('', Validators.required),
@@ -67,8 +71,33 @@ export class MultiStepFormComponent {
     return this.form.get('budget')?.value === 'custom' || this.customBudgetValue !== null;
   }
 
+
+  nextStep() {
+    if (this.currentStep === 1 && this.participants.length >= 3) {
+      this.currentStep++;
+      this.updateProgress();
+    } else if (this.currentStep === 2 && this.form.get('infos')?.valid) {
+      this.currentStep++;
+      this.updateProgress();
+    } else if (this.currentStep === 3 && this.form.get('budget')?.valid) {
+      this.currentStep++;
+      this.updateProgress();
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      this.updateProgress();
+    }
+  }
+
+  updateProgress() {
+    this.progress = (this.currentStep / 4) * 100;
+  }
+
   onSubmit() {
-    if (this.form.valid) { 
+    if (this.form.valid) {
       console.log(this.form.value);
     } else {
       console.log('Form is invalid');
