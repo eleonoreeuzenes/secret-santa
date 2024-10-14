@@ -1,4 +1,4 @@
-export interface SantaEvent {
+export interface SecretSanta  {
   organizer : string;
   event_name: string;
   event_date: string;

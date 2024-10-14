@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { CreateSantaEventComponent } from './santa-event/create-santa-event/create-santa-event.component';
+import { CreateSecretSantaComponent } from './secret-santa/create-santa-event/create-secret-santa.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, CreateSantaEventComponent],
+  imports: [HeaderComponent, FooterComponent, CreateSecretSantaComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

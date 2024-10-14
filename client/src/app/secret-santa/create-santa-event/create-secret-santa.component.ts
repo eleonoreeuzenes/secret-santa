@@ -1,21 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SantaEventService } from '../santa-event.service';
-import { SantaEvent } from '../santa-event.model';
+import { SecretSanta  } from '../secret-santa.model';
+import { SecretSantaService } from '../secret-santa.service';
 
 @Component({
   selector: 'app-create-santa-event',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './create-santa-event.component.html',
-  styleUrl: './create-santa-event.component.css'
+  templateUrl: './create-secret-santa.component.html',
+  styleUrl: './create-secret-santa.component.css'
 })
-export class CreateSantaEventComponent {
+export class CreateSecretSantaComponent {
 
   successMessage: string | null = null;
   errorMessage: string | null = null;
-  private santaEventService= inject(SantaEventService);
+  private SecretSantaService= inject(SecretSantaService);
   currentStep = 1;
   progress = 25;
 
@@ -121,7 +121,7 @@ export class CreateSantaEventComponent {
     }
 
       const formData = this.form.value;
-      const santaEvent: SantaEvent = {
+      const SecretSanta : SecretSanta  = {
         participants: formData.participants!.filter(participant => participant !== null) as string[],
         organizer: formData.infos!.organiser!,
         event_name: formData.infos!.eventName!,
@@ -131,8 +131,8 @@ export class CreateSantaEventComponent {
 
       };
 
-      this.santaEventService.submitEvent(santaEvent).subscribe({
-        next: (response: SantaEvent) => {
+      this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
+        next: (response: SecretSanta ) => {
           console.log('Successful response:', response);
           this.successMessage = 'Event submitted successfully!';
           this.form.reset();

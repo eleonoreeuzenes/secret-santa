@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateSantaEventComponent } from './create-santa-event.component';
+import { CreateSecretSantaComponent } from './create-secret-santa.component';
 
 describe('MultiStepFormComponent', () => {
-  let component: CreateSantaEventComponent;
-  let fixture: ComponentFixture<CreateSantaEventComponent>;
+  let component: CreateSecretSantaComponent;
+  let fixture: ComponentFixture<CreateSecretSantaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateSantaEventComponent]
+      imports: [CreateSecretSantaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreateSantaEventComponent);
+    fixture = TestBed.createComponent(CreateSecretSantaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
