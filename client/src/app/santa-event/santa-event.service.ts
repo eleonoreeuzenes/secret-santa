@@ -26,9 +26,6 @@ export class SantaEventService {
         return throwError(() => new Error('Oops! Something went wrong. Please try again later.'));
       })
     )
-    .subscribe(data => {
-      console.log("succesful" + data)
-    });
   }
 
 }

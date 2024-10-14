@@ -3,7 +3,6 @@ import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule
 import { CommonModule } from '@angular/common';
 import { SantaEventService } from '../santa-event.service';
 import { SantaEvent } from '../santa-event.model';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-santa-event',
@@ -14,7 +13,8 @@ import { Observable } from 'rxjs';
 })
 export class CreateSantaEventComponent {
 
-  submitResponse$: Observable<SantaEvent> | null = null;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
   private santaEventService= inject(SantaEventService);
   currentStep = 1;
   progress = 25;
@@ -131,7 +131,17 @@ export class CreateSantaEventComponent {
 
       };
 
-      this.santaEventService.submitEvent(santaEvent)
+      this.santaEventService.submitEvent(santaEvent).subscribe({
+        next: (response: SantaEvent) => {
+          console.log('Successful response:', response);
+          this.successMessage = 'Event submitted successfully!';
+          this.form.reset();
+        },
+        error: (err: Error) => {
+          console.error('Error:', err.message);
+          this.errorMessage = err.message;
+        }
+      });
 
   }
 

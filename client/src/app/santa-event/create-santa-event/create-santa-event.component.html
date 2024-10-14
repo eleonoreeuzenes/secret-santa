@@ -146,12 +146,17 @@
         <p><strong>Montant :</strong> {{ customBudgetValue !== null ? customBudgetValue : form.get('budget')?.value }} €</p>
       </div>
 
+      <div *ngIf="errorMessage" class="text-red-600">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="text-green-600">
+        {{ successMessage }}
+      </div>
+
       <div class="flex justify-between">
         <button type="button" class="px-4 py-2 rounded text-white bg-gray-600" (click)="previousStep()">Retour</button>
         <button type="submit" class="px-4 py-2 rounded text-white bg-indigo-600">Générer le secret santa</button>
-        <div *ngIf="submitResponse$ | async as response">
-          <p>Form submitted successfully! Response: {{ response | json }}</p>
-        </div>
       </div>
     </div>
 
