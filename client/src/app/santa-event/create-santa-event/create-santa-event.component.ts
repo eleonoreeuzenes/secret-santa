@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SantaEventService } from '../santa-event.service';
+import { SantaEvent } from '../santa-event.model';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-multi-step-form',
+  selector: 'app-create-santa-event',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './multi-step-form.component.html',
-  styleUrl: './multi-step-form.component.css'
+  templateUrl: './create-santa-event.component.html',
+  styleUrl: './create-santa-event.component.css'
 })
-export class MultiStepFormComponent {
+export class CreateSantaEventComponent {
 
+  submitResponse$: Observable<SantaEvent> | null = null;
+  private santaEventService= inject(SantaEventService);
   currentStep = 1;
   progress = 25;
 
@@ -46,7 +51,7 @@ export class MultiStepFormComponent {
     const participantNames = this.participants.controls.map(control => control.value);
     return participantNames.filter(name => name.trim() !== '').length >= 3;
   }
-  
+
   addParticipant() {
     this.participants.push(new FormControl('', Validators.required));
   }
@@ -109,11 +114,25 @@ export class MultiStepFormComponent {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
-    } else {
+
+    if (!this.form.valid) {
       console.log('Form is invalid');
+      return;
     }
+
+      const formData = this.form.value;
+      const santaEvent: SantaEvent = {
+        participants: formData.participants!.filter(participant => participant !== null) as string[],
+        organizer: formData.infos!.organiser!,
+        event_name: formData.infos!.eventName!,
+        event_date: formData.infos!.eventDate!,
+        event_location: formData.infos!.eventLocation!,
+        budget: formData.budget === 'custom' ? this.customBudgetValue! : formData.budget!
+
+      };
+
+      this.santaEventService.submitEvent(santaEvent)
+
   }
 
 }
