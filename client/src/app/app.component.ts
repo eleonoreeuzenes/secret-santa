@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { MultiStepFormComponent } from './multi-step-form/multi-step-form.component';
+import { CreateSecretSantaComponent } from './secret-santa/create-secret-santa/create-secret-santa.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, MultiStepFormComponent],
+  imports: [HeaderComponent, FooterComponent, CreateSecretSantaComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

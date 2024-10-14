@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SecretSanta  } from '../secret-santa.model';
+import { SecretSantaService } from '../secret-santa.service';
 
 @Component({
-  selector: 'app-multi-step-form',
+  selector: 'app-create-santa-event',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './multi-step-form.component.html',
-  styleUrl: './multi-step-form.component.css'
+  templateUrl: './create-secret-santa.component.html',
+  styleUrl: './create-secret-santa.component.css'
 })
-export class MultiStepFormComponent {
+export class CreateSecretSantaComponent {
 
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  private SecretSantaService= inject(SecretSantaService);
   currentStep = 1;
   progress = 25;
 
@@ -46,7 +51,7 @@ export class MultiStepFormComponent {
     const participantNames = this.participants.controls.map(control => control.value);
     return participantNames.filter(name => name.trim() !== '').length >= 3;
   }
-  
+
   addParticipant() {
     this.participants.push(new FormControl('', Validators.required));
   }
@@ -109,11 +114,35 @@ export class MultiStepFormComponent {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
-    } else {
+
+    if (!this.form.valid) {
       console.log('Form is invalid');
+      return;
     }
+
+      const formData = this.form.value;
+      const SecretSanta : SecretSanta  = {
+        participants: formData.participants!.filter(participant => participant !== null) as string[],
+        organizer: formData.infos!.organiser!,
+        event_name: formData.infos!.eventName!,
+        event_date: formData.infos!.eventDate!,
+        event_location: formData.infos!.eventLocation!,
+        budget: formData.budget === 'custom' ? this.customBudgetValue! : formData.budget!
+
+      };
+
+      this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
+        next: (response: SecretSanta ) => {
+          console.log('Successful response:', response);
+          this.successMessage = 'Event submitted successfully!';
+          this.form.reset();
+        },
+        error: (err: Error) => {
+          console.error('Error:', err.message);
+          this.errorMessage = err.message;
+        }
+      });
+
   }
 
 }

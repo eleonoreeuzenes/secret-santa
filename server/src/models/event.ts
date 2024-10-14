@@ -5,7 +5,7 @@ const eventSchema = new Schema<EventInterface & Document>({
   organizer: { type: String, required: true },
   event_name: { type: String, required: true },
   event_date: { type: Date, required: true },
-  event_location: { type: String },
+  event_location: { type: String, required: true },
   budget: { type: Number, required: true },
   participants: {
     type: [
