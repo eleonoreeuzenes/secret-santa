@@ -133,7 +133,7 @@ export class CreateSecretSantaComponent {
 
       };
 
-      this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
+      this.SecretSantaService.submitSecretSanta(SecretSanta ).subscribe({
         next: (response: SecretSantaResponse ) => {
           const secretSantaID = response._id;
           const organizer = response.organizer;
