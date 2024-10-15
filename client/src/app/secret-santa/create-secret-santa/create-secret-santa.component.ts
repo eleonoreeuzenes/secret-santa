@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { SecretSanta, SecretSantaResponse  } from '../secret-santa.model';
 import { SecretSantaService } from '../secret-santa.service';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from '../../header/header.component';
 
 
 @Component({
   selector: 'app-create-santa-event',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLink],
+  imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLink, HeaderComponent],
   templateUrl: './create-secret-santa.component.html',
   styleUrl: './create-secret-santa.component.css'
 })

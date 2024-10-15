@@ -7,11 +7,12 @@ import {
   RouterLink,
   RouterOutlet,
  } from '@angular/router';
+import { SeeSecretSantaHeaderComponent } from './see-secret-santa-header/see-secret-santa-header.component';
 
 @Component({
   selector: 'app-see-secret-santa',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule, SeeSecretSantaHeaderComponent],
   templateUrl: './see-secret-santa.component.html',
   styleUrl: './see-secret-santa.component.css'
 })

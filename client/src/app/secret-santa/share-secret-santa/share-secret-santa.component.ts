@@ -5,11 +5,12 @@ import {
   RouterLink,
   RouterOutlet,
  } from '@angular/router';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-share-secret-santa',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule, HeaderComponent],
   templateUrl: './share-secret-santa.component.html',
   styleUrl: './share-secret-santa.component.css'
 })
