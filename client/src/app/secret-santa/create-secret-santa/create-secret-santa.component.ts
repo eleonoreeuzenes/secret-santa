@@ -1,21 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SecretSanta  } from '../secret-santa.model';
+import { SecretSanta, SecretSantaResponse  } from '../secret-santa.model';
 import { SecretSantaService } from '../secret-santa.service';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-create-santa-event',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLink],
   templateUrl: './create-secret-santa.component.html',
   styleUrl: './create-secret-santa.component.css'
 })
 export class CreateSecretSantaComponent {
 
-  successMessage: string | null = null;
   errorMessage: string | null = null;
   private SecretSantaService= inject(SecretSantaService);
+  private router = inject(Router);
   currentStep = 1;
   progress = 25;
 
@@ -132,10 +134,13 @@ export class CreateSecretSantaComponent {
       };
 
       this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
-        next: (response: SecretSanta ) => {
-          console.log('Successful response:', response);
-          this.successMessage = 'Event submitted successfully!';
-          this.form.reset();
+        next: (response: SecretSantaResponse ) => {
+          const secretSantaID = response._id;
+          const organizer = response.organizer;
+          const eventName = response.event_name;
+          this.router.navigate(['/invite', secretSantaID], {
+            queryParams: { eventName: eventName, organizer: organizer }
+          });
         },
         error: (err: Error) => {
           console.error('Error:', err.message);

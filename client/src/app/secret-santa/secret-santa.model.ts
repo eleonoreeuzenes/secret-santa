@@ -7,3 +7,9 @@ export interface SecretSanta  {
   participants: string[];
 
 }
+
+export interface SecretSantaResponse extends SecretSanta {
+  _id: string;
+  organizer : string;
+  event_name: string;
+}

@@ -1,31 +1,28 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 
-import { SecretSanta  } from './secret-santa.model';
+import { SecretSanta, SecretSantaResponse } from './secret-santa.model';
 import { environment } from '../../environments/environment';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class SecretSantaService {
-
   private httpClient = inject(HttpClient);
-  private apiUrl = environment.apiUrl+'/event';
+  private apiUrl = environment.apiUrl + '/event';
 
-  submitEvent(data: SecretSanta ) {
+  submitEvent(data: SecretSanta): Observable<SecretSantaResponse> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
 
-    return this.httpClient.post<SecretSanta >(this.apiUrl, data, { headers }).pipe(
-      catchError(error => {
-        console.error('Delivery problem:', error);
+    return this.httpClient.post<SecretSantaResponse>(this.apiUrl, data, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error on creating a secret santa:', error);
         return throwError(() => new Error('Oops! Something went wrong. Please try again later.'));
       })
-    )
+    );
   }
-
 }
