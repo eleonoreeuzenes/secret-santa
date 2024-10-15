@@ -13,7 +13,6 @@ import { SecretSantaService } from '../secret-santa.service';
 })
 export class CreateSecretSantaComponent {
 
-  successMessage: string | null = null;
   errorMessage: string | null = null;
   private SecretSantaService= inject(SecretSantaService);
   currentStep = 1;
@@ -134,8 +133,8 @@ export class CreateSecretSantaComponent {
       this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
         next: (response: SecretSanta ) => {
           console.log('Successful response:', response);
-          this.successMessage = 'Event submitted successfully!';
-          this.form.reset();
+          // const secretSantaID = response._id;
+          // this.router.navigate(['/invite', secretSantaID]);
         },
         error: (err: Error) => {
           console.error('Error:', err.message);
