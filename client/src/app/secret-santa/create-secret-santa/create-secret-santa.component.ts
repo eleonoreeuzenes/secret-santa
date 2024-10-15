@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SecretSanta, SecretSantaResponse  } from '../secret-santa.model';
 import { SecretSantaService } from '../secret-santa.service';
@@ -135,12 +135,9 @@ export class CreateSecretSantaComponent {
 
       this.SecretSantaService.submitEvent(SecretSanta ).subscribe({
         next: (response: SecretSantaResponse ) => {
-          console.log('Successful response:', response);
           const secretSantaID = response._id;
           const organizer = response.organizer;
           const eventName = response.event_name;
-          console.log("organizer: "+ organizer);
-          console.log("event: "+ eventName);
           this.router.navigate(['/invite', secretSantaID], {
             queryParams: { eventName: eventName, organizer: organizer }
           });

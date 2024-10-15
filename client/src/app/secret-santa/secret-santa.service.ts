@@ -13,14 +13,14 @@ export class SecretSantaService {
   private httpClient = inject(HttpClient);
   private apiUrl = environment.apiUrl + '/event';
 
-  submitEvent(data: SecretSanta): Observable<SecretSantaResponse> { 
+  submitEvent(data: SecretSanta): Observable<SecretSantaResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
     return this.httpClient.post<SecretSantaResponse>(this.apiUrl, data, { headers }).pipe(
       catchError((error) => {
-        console.error('Delivery problem:', error);
+        console.error('Error on creating a secret santa:', error);
         return throwError(() => new Error('Oops! Something went wrong. Please try again later.'));
       })
     );
