@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { SecretSantaService } from '../../secret-santa.service';
+import { GiftAssignment } from '../../git-assignement.model';
 
 @Component({
   selector: 'app-reveal-assignment',
@@ -8,8 +11,17 @@ import { Component } from '@angular/core';
   styleUrl: './reveal-assignment.component.css'
 })
 export class RevealAssignmentComponent {
-  participantName: string = 'Richard';
-  reciever: string = 'Lara';
+  participantName: string = '';
+  reciever: string | undefined = '';
+  CurrentGiftAssignement: GiftAssignment | undefined = undefined;
+  private route = inject(ActivatedRoute);
+  private SecretSantaService= inject(SecretSantaService);
+
+  ngOnInit(): void {
+    this.participantName = this.route.snapshot.paramMap.get('participantName')!;
+    this.CurrentGiftAssignement = this.SecretSantaService.getSingleGiftAssignement(this.participantName);
+    this.reciever = this.CurrentGiftAssignement?.receiver;
+  }
 
   revealReciever(participantName : string): void {
     console.log("coucou"+ participantName)

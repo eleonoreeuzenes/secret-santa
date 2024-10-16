@@ -48,7 +48,7 @@ export class SecretSantaService {
       'Content-Type': 'application/json',
     });
 
-    return this.httpClient.get<GiftAssignmentsArray>(this.apiUrl+ '/assignments/events/'+ secretSantaID,  { headers }).pipe(
+    return this.httpClient.get<GiftAssignmentsArray>(this.apiUrl+ '/assignments/event/'+ secretSantaID,  { headers }).pipe(
       catchError((error) => {
         console.error('Error on getting secret santa assignements:', error);
         return throwError(() => new Error('Oups ! Un problème est survenu. Veuillez réessayer plus tard.'));
@@ -82,5 +82,5 @@ export class SecretSantaService {
 
     return assignment;
   }
-  }
+
 }

@@ -38,6 +38,15 @@ export class SeeSecretSantaComponent {
       next: (response) => {
         this.secretSantaDetails = response;
         this.SecretSantaService.setSecretSantaDetails(response);
+
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+      }
+    });
+    this.SecretSantaService.getGiftAssignementByEvent(this.secretSantaID).subscribe({
+      next: (response) => {
+        this.SecretSantaService.setGiftAssignementByEvent(response);
       },
       error: (error) => {
         this.errorMessage = error.message;
