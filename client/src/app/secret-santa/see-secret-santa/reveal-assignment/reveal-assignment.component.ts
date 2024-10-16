@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './reveal-assignment.component.css'
 })
 export class RevealAssignmentComponent {
+  participantName: string = 'Richard';
+  reciever: string = 'Lara';
 
+  revealReciever(participantName : string): void {
+    console.log("coucou"+ participantName)
+  }
 }

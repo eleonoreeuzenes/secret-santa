@@ -10,8 +10,6 @@ import {
  } from '@angular/router';
 import { SeeSecretSantaHeaderComponent } from '../see-secret-santa-header/see-secret-santa-header.component';
 
-
-
 @Component({
   selector: 'app-confirm-participant',
   standalone: true,
@@ -21,12 +19,19 @@ import { SeeSecretSantaHeaderComponent } from '../see-secret-santa-header/see-se
 })
 export class ConfirmParticipantComponent {
   participantName: string = '';
+  secretSantaID: string = '';
+
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   ngOnInit(): void {
     // Get the participantName from the route parameters
     this.participantName = this.route.snapshot.paramMap.get('participantName')!;
-    console.log(this.participantName);
+    this.secretSantaID = this.route.parent?.snapshot.paramMap.get('secretSantaID')!;
   }
-  
+
+  goToRevealParticipant(participantName: string): void {
+    this.router.navigate(['secretsanta', this.secretSantaID, 'reveal-assignment', participantName]);
+
+  }
 }
