@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SecretSanta, SecretSantaResponse  } from '../secret-santa.model';
+import { SecretSantaResponse } from '../secret-santa.model';
 import { SecretSantaService } from '../secret-santa.service';
 import {
   ActivatedRoute,
   RouterLink,
   RouterOutlet,
+  Router
  } from '@angular/router';
 import { SeeSecretSantaHeaderComponent } from './see-secret-santa-header/see-secret-santa-header.component';
 
@@ -36,6 +37,7 @@ export class SeeSecretSantaComponent {
     this.SecretSantaService.getSecretSanta(this.secretSantaID).subscribe({
       next: (response) => {
         this.secretSantaDetails = response;
+        this.SecretSantaService.setSecretSantaDetails(response);
       },
       error: (error) => {
         this.errorMessage = error.message;

@@ -13,6 +13,8 @@ export class SecretSantaService {
   private httpClient = inject(HttpClient);
   private apiUrl = environment.apiUrl;
 
+  private secretSantaDetails!: SecretSantaResponse;
+
   submitSecretSanta(data: SecretSanta): Observable<SecretSantaResponse> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -37,5 +39,13 @@ export class SecretSantaService {
         return throwError(() => new Error('Oups ! Un problème est survenu. Veuillez réessayer plus tard.'));
       })
     );
+  }
+
+  setSecretSantaDetails(details: SecretSantaResponse): void {
+    this.secretSantaDetails = details;
+  }
+
+  getSecretSantaDetails(): SecretSantaResponse {
+    return this.secretSantaDetails;
   }
 }
