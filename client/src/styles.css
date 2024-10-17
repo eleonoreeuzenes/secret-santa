@@ -6,6 +6,14 @@
   p {
     @apply text-slate-800 text-base; /* Your p styles */
   }
+
+  .next-step {
+   @apply px-4 py-2 rounded text-white bg-indigo-600 hover:bg-indigo-800;
+  }
+
+  .previous-step {
+    @apply px-4 py-2 rounded text-white bg-gray-600 hover:bg-gray-800
+  }
 }
 
 @tailwind components;
