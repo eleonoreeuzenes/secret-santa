@@ -1,0 +1,12 @@
+<div class="my-24  px-6 w-full max-w-lg mx-auto">
+  <h3 class="font-bold text-slate-600 text-2xl">Est-ce bien vous ?</h3>
+  <p>Ce lien est à usage unique. Si vous dévoilez le nom d'un autre participant, vous risquez de gâcher le tirage et il devra être refait.</p>
+  <button
+  class="flex flex-col px-4 py-3 my-3 rounded bg-indigo-600 text-white"
+  (click)="goToRevealParticipant(participantName)"
+  >
+  Je suis bien {{ participantName }}
+</button>
+</div>
+
+
