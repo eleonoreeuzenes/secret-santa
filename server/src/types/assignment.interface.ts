@@ -4,6 +4,7 @@ export interface Assignment {
   event: Types.ObjectId; 
   giver: string; 
   receiver: string; 
+  revealed: Boolean;
 }
 
 export interface AssignmentInterface

@@ -31,7 +31,8 @@ export const createEvent = async (eventData: any) => {
     const assignments = secretSantaPairs.map(pair => ({
         event: savedEvent._id,
         giver: pair.giver,
-        receiver: pair.receiver
+        receiver: pair.receiver,
+        revealed: false
     }));
 
     await AssignmentModel.insertMany(assignments);
