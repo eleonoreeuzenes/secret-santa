@@ -18,15 +18,25 @@ export class RevealAssignmentComponent {
   buttonClass: string = "bg-indigo-600 text-white hover:bg-indigo-800";
   private route = inject(ActivatedRoute);
   private SecretSantaService= inject(SecretSantaService);
+  errorMessage: string = '';
 
   ngOnInit(): void {
     this.participantName = this.route.snapshot.paramMap.get('participantName')!;
     this.CurrentGiftAssignement = this.SecretSantaService.getSingleGiftAssignement(this.participantName);
-
+    console.log("gift pairs : " + this.CurrentGiftAssignement);
+    console.log(this.CurrentGiftAssignement);
   }
 
   revealReciever(participantName : string): void {
-    this.reciever = this.CurrentGiftAssignement?.receiver;
-    this.buttonClass = "bg-white text-indigo-600 border border-slate-300"
+    this.SecretSantaService.flagGiftAssignementAsRevealed(this.CurrentGiftAssignement!._id, this.CurrentGiftAssignement!).subscribe({
+      next: () => {
+        this.reciever = this.CurrentGiftAssignement?.receiver;
+        this.buttonClass = "bg-white text-indigo-600 border border-slate-300";
+        this.CurrentGiftAssignement!.revealed=true;
+      },
+      error: (error) => {
+        return this.errorMessage = error.message;
+      }
+    });
   }
 }

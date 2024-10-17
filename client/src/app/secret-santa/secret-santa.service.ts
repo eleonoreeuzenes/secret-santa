@@ -56,6 +56,21 @@ export class SecretSantaService {
     );
   }
 
+  flagGiftAssignementAsRevealed(giftAssignementID: string, data: GiftAssignment): Observable<GiftAssignment> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    console.log("data");
+    console.log(data);
+
+    return this.httpClient.put<GiftAssignment>(this.apiUrl+ '/assignments/'+ giftAssignementID, data, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error on updating gift assignement:', error);
+        return throwError(() => new Error('Oups ! Un problème est survenu. Veuillez réessayer plus tard.'));
+      })
+    );
+  }
+
   setSecretSantaDetails(details: SecretSantaResponse): void {
     this.secretSantaDetails = details;
   }
@@ -66,6 +81,15 @@ export class SecretSantaService {
 
   setGiftAssignementByEvent(details: GiftAssignmentsArray): void {
     this.giftAssignementsOfEvent = details;
+  }
+
+  //TODO : rename methods for clarity
+  getGiftAssignementsOfEvent(): GiftAssignmentsArray | undefined {
+    if (!this.giftAssignementsOfEvent) {
+      console.error('Gift assignments not set');
+      return undefined;
+    }
+    return this.giftAssignementsOfEvent;
   }
 
   getSingleGiftAssignement(giver: string): GiftAssignment | undefined {
