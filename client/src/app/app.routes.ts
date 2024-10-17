@@ -5,6 +5,7 @@ import { SeeSecretSantaComponent } from './secret-santa/see-secret-santa/see-sec
 import { ConfirmParticipantComponent } from './secret-santa/see-secret-santa/confirm-participant/confirm-participant.component';
 import { RevealAssignmentComponent } from './secret-santa/see-secret-santa/reveal-assignment/reveal-assignment.component';
 import { SelectParticipantComponent } from './secret-santa/see-secret-santa/select-participant/select-participant.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -33,5 +34,9 @@ export const routes: Routes = [
         component: RevealAssignmentComponent,
       }
     ]
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
