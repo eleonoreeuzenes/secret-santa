@@ -15,11 +15,13 @@ export const routes: Routes = [
   },
   {
     path: 'invite/:secretSantaID',
-    component: ShareSecretSantaComponent
+    component: ShareSecretSantaComponent,
+    title: 'Invitation au Secret Santa',
   },
   {
     path: 'secretsanta/:secretSantaID',
     component: SeeSecretSantaComponent,
+    title: 'Participez au Secret Santa',
     children: [
       {
         path: '',
@@ -38,5 +40,6 @@ export const routes: Routes = [
   {
     path: '**',
     component: NotFoundComponent,
+    title: 'Page non trouvée',
   },
 ];
