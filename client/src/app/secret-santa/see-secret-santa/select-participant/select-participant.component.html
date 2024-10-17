@@ -4,13 +4,15 @@
       {{ errorMessage }}
     </div>
 
-    <div *ngIf="participants.length > 0">
+    <div *ngIf="giftAssignements">
       <button
-      *ngFor="let participant of participants"
-      class="flex flex-col px-4 py-3 my-3 rounded border border-slate-300 hover:bg-indigo-600 text-indigo-600 hover:text-white"
-      (click)="goToConfirmParticipant(participant)"
+      *ngFor="let assignment of giftAssignements"
+      class="flex flex-col px-4 py-3 my-3 rounded border w-full"
+      [ngClass]="{' border-slate-300 text-slate-300': assignment.revealed, ' border-slate-300 hover:bg-indigo-600 text-indigo-600 hover:text-white': !assignment.revealed}"
+      (click)="goToConfirmParticipant( assignment.giver)"
+      [disabled]="assignment.revealed"
       >
-      {{ participant }}
+      {{  assignment.giver }}
     </button>
   </div>
 </div>

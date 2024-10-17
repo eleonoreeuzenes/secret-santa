@@ -6,6 +6,7 @@ import {
   Router
  } from '@angular/router';
 import { SecretSantaService } from '../../secret-santa.service';
+import { GiftAssignmentsArray } from '../../git-assignement.model';
 
 @Component({
   selector: 'app-select-participant',
@@ -18,25 +19,16 @@ export class SelectParticipantComponent {
   participants: string[] = [];
   errorMessage: string = '';
   secretSantaID: string = '';
+  giftAssignements: GiftAssignmentsArray | undefined = undefined;
 
   private secretSantaService = inject(SecretSantaService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.loadParticipants();
     this.secretSantaID = this.route.parent?.snapshot.paramMap.get('secretSantaID')!;
+    this.giftAssignements = this.secretSantaService.getGiftAssignementsOfEvent();
   }
-
-  loadParticipants(): void {
-    const secretSantaDetails = this.secretSantaService.getSecretSantaDetails();
-    if (secretSantaDetails && secretSantaDetails.participants) {
-      this.participants = secretSantaDetails.participants;
-    } else {
-      this.errorMessage = 'No participants found.';
-    }
-  }
-
 
   goToConfirmParticipant(participantName: string): void {
     this.router.navigate(['secretsanta', this.secretSantaID, 'confirm-participant', participantName]);

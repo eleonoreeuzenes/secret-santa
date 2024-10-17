@@ -8,5 +8,7 @@
       >
       {{ reciever }}
     </button>
-
+    <div *ngIf="errorMessage" class="mt-4 p-4 rounded text-red-900 bg-red-200">
+      {{ errorMessage }}
+    </div>
 </div>
