@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SecretSantaService } from '../../secret-santa.service';
 import { GiftAssignment } from '../../git-assignement.model';
 import { CommonModule } from '@angular/common';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-reveal-assignment',
@@ -31,6 +32,14 @@ export class RevealAssignmentComponent {
     this.SecretSantaService.flagGiftAssignementAsRevealed(this.CurrentGiftAssignement!._id, this.CurrentGiftAssignement!).subscribe({
       next: () => {
         this.reciever = this.CurrentGiftAssignement?.receiver;
+
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+
+
         this.buttonClass = "bg-white text-indigo-600 border border-slate-300";
         this.CurrentGiftAssignement!.revealed=true;
       },
