@@ -36,7 +36,11 @@ export class SeeSecretSantaComponent {
     this.secretSantaID = this.route.snapshot.paramMap.get('secretSantaID')!;
     this.SecretSantaService.getSecretSanta(this.secretSantaID).subscribe({
       next: (response) => {
+        console.log('RESPONSE :'+ response)
+        console.log(response)
         this.secretSantaDetails = response;
+        console.log('this.secretSantaDetails :'+ this.secretSantaDetails)
+        console.log(this.secretSantaDetails);
         this.SecretSantaService.setSecretSantaDetails(response);
 
       },
@@ -47,6 +51,8 @@ export class SeeSecretSantaComponent {
     this.SecretSantaService.getGiftAssignementByEvent(this.secretSantaID).subscribe({
       next: (response) => {
         this.SecretSantaService.setGiftAssignementByEvent(response);
+        console.log("this.SecretSantaService.setGiftAssignementByEvent(response);")
+        console.log(response);
       },
       error: (error) => {
         this.errorMessage = error.message;
