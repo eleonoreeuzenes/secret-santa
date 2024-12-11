@@ -27,7 +27,18 @@ export class SelectParticipantComponent {
 
   ngOnInit(): void {
     this.secretSantaID = this.route.parent?.snapshot.paramMap.get('secretSantaID')!;
-    this.giftAssignements = this.secretSantaService.getGiftAssignementsOfEvent();
+    this.secretSantaService.getGiftAssignementsOfEvent().subscribe({
+      next: (assignments) => {
+        if (assignments) {
+          this.giftAssignements = assignments;
+        } else {
+          console.error('Gift assignments not available yet.');
+        }
+      },
+      error: (error) => {
+        console.error('Error loading gift assignments:', error);
+      }
+    });
   }
 
   goToConfirmParticipant(participantName: string): void {
