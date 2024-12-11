@@ -71,7 +71,6 @@ export class SecretSantaService {
     );
   }
 
-  // Gestion réactive des données
   setSecretSantaDetails(details: SecretSantaResponse): void {
     this.secretSantaDetails$.next(details);
   }
@@ -82,10 +81,6 @@ export class SecretSantaService {
 
   setGiftAssignementByEvent(assignments: GiftAssignmentsArray): void {
     this.giftAssignementsOfEvent$.next(assignments);
-    console.log('assignments');
-    console.log(assignments);
-    console.log('this.giftAssignementsOfEvent');
-    console.log(this.giftAssignementsOfEvent$);
   }
 
   getGiftAssignementsOfEvent(): Observable<GiftAssignmentsArray | null> {
