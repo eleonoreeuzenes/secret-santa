@@ -18,7 +18,7 @@ export const createEvent = async (eventData: any) => {
     const newEvent = new EventModel({
         organizer: eventData.organizer,
         event_name: eventData.event_name,
-        event_date: new Date(eventData.event_date), 
+        event_date: eventData.event_date, 
         event_location: eventData.event_location,
         budget: eventData.budget,
         participants: eventData.participants

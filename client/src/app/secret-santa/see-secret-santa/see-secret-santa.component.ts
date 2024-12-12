@@ -38,7 +38,6 @@ export class SeeSecretSantaComponent {
       next: (response) => {
         this.secretSantaDetails = response;
         this.SecretSantaService.setSecretSantaDetails(response);
-
       },
       error: (error) => {
         this.errorMessage = error.message;

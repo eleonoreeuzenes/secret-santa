@@ -60,8 +60,6 @@ export class SecretSantaService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    console.log("data");
-    console.log(data);
 
     return this.httpClient.put<GiftAssignment>(this.apiUrl + '/assignments/' + giftAssignementID, data, { headers }).pipe(
       catchError((error) => {

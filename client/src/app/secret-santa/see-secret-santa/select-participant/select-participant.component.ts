@@ -27,6 +27,15 @@ export class SelectParticipantComponent {
 
   ngOnInit(): void {
     this.secretSantaID = this.route.parent?.snapshot.paramMap.get('secretSantaID')!;
+    this.secretSantaService.getGiftAssignementByEvent(this.secretSantaID).subscribe({
+      next: (response) => {
+        this.secretSantaService.setGiftAssignementByEvent(response);
+      },
+      error: (error) => {
+        this.errorMessage = error.message;
+        console.error('Error fetching assignments:', error);
+      }
+    });
     this.secretSantaService.getGiftAssignementsOfEvent().subscribe({
       next: (assignments) => {
         if (assignments) {
