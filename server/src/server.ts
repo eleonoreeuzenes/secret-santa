@@ -13,7 +13,13 @@ dotenv.config({ path: '../../.env' });
 const app = express();
 const httpServer = createServer(app);
 
-app.use(cors());
+app.use(cors(
+  {
+    origin: 'https://secretsanta.eleonoreeuzenes.fr', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    allowedHeaders: ['Content-Type', 'Authorization'] 
+  }
+));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
