@@ -1,5 +1,23 @@
 version: '3'
 services:
+  # Angular Frontend served by Nginx
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - "./frontend/dist:/usr/share/nginx/html"
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      # Frontend routes (main domain and all paths except /api)
+      - "traefik.http.routers.secretsanta-frontend.rule=Host(`secretsanta.eleonoreeuzenes.fr`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.secretsanta-frontend.entrypoints=websecure"
+      - "traefik.http.routers.secretsanta-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.secretsanta-frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik-network"
+
+  # Node.js API Server
   server:
     image: node:20-alpine
     volumes:
@@ -14,11 +32,15 @@ services:
       - mongodb
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.secretsanta.rule=Host(`secretsanta.eleonoreeuzenes.fr`)"
-      - "traefik.http.routers.secretsanta.entrypoints=websecure"
-      - "traefik.http.routers.secretsanta.tls.certresolver=letsencrypt"
-      - "traefik.http.services.secretsanta.loadbalancer.server.port=3000"
+      # API routes (all /api paths)
+      - "traefik.http.routers.secretsanta-api.rule=Host(`secretsanta.eleonoreeuzenes.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.secretsanta-api.entrypoints=websecure"
+      - "traefik.http.routers.secretsanta-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.secretsanta-api.loadbalancer.server.port=3000"
       - "traefik.docker.network=traefik-network"
+      # Strip /api prefix when forwarding to backend
+      - "traefik.http.middlewares.secretsanta-api-stripprefix.stripprefix.prefixes=/api"
+      - "traefik.http.routers.secretsanta-api.middlewares=secretsanta-api-stripprefix"
       
   mongodb:
     image: mongo:4.0
@@ -28,7 +50,6 @@ services:
       - .env
     networks:
       - backend
-    # MongoDB doesn't need to be exposed through Traefik
   
 networks:
   backend:
