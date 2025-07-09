@@ -1,31 +1,37 @@
 version: '3'
-
 services:
   server:
     image: node:20-alpine
     volumes:
       - "./server:/var/www"  
-    ports:
-      - "3000:3000"
     env_file:
       - .env
     command: sh -c "cd /var/www && npm install && npm start"
     networks:
       - backend
+      - traefik-network
     depends_on:
       - mongodb
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.secretsanta.rule=Host(`secretsanta.eleonoreeuzenes.fr`)"
+      - "traefik.http.routers.secretsanta.entrypoints=websecure"
+      - "traefik.http.routers.secretsanta.tls.certresolver=letsencrypt"
+      - "traefik.http.services.secretsanta.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik-network"
+      
   mongodb:
     image: mongo:4.0
     volumes:
       - "./database/data:/data/db"
-    ports: 
-      - "27017:27017"
     env_file:
       - .env
     networks:
       - backend
+    # MongoDB doesn't need to be exposed through Traefik
   
 networks:
   backend:
     driver: bridge
+  traefik-network:
+    external: true
