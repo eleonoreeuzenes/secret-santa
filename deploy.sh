@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 # Configuration
 PROJECT_NAME="secretsanta"
 BACKUP_DIR="./backups"
-FRONTEND_DIR="./frontend"
+FRONTEND_DIR="./client"
 SERVER_DIR="./server"
 COMPOSE_FILE="docker-compose.yml"
 
