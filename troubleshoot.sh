@@ -20,10 +20,10 @@ if [ -d "dist" ]; then
     find dist -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -10
     
     # Check if index.html exists in dist or subdirectory
-    if [ -f "dist/index.html" ]; then
-        echo "✓ Found index.html in dist/"
+    if [ -f "dist/browser/index.html" ]; then
+        echo "✓ Found index.html in dist/browser/"
     else
-        echo "✗ No index.html in dist/, checking subdirectories..."
+        echo "✗ No index.html in dist/browser/, checking subdirectories..."
         SUBDIRS=$(find dist -name "index.html" -type f)
         if [ -n "$SUBDIRS" ]; then
             echo "Found index.html in: $SUBDIRS"
